@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0 text-center">Registrar Nueva Cita</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre de la Mascota</label>
+                        <input type="text" name="mascota" class="form-control" placeholder="Ej: Toby" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del Propietario</label>
+                        <input type="text" name="propietario" class="form-control" placeholder="Ej: Juan Pérez" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Especie</label>
+                        <select name="especie" class="form-select" required>
+                            <option value="Perro">Perro</option>
+                            <option value="Gato">Gato</option>
+                            <option value="Ave">Ave</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha de la Cita</label>
+                        <input type="datetime-local" name="fecha" class="form-control" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar Cita</button>
+                        <a href="{{ url_for('index') }}" class="btn btn-link">Volver a la Agenda</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
