@@ -1,36 +1,109 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h2 class="mb-4">Agenda de Citas Médicas</h2>
+<!-- Header Hero -->
+<div class="hero-header mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <h1 class="display-5 fw-bold mb-3 hero-title">
+                Agenda de Citas
+            </h1>
+            <p class="lead text-muted mb-0">Gestiona todas las citas de tus pacientes peludos con facilidad</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            <div class="stats-card bg-primary bg-opacity-10 border-0">
+                <div class="stats-number">{{ citas|length }}</div>
+                <div class="stats-label">Citas Hoy</div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<!-- Search & Filters -->
+<div class="search-section mb-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+            <div class="input-group input-group-lg">
+                <span class="input-group-text bg-white border-primary">
+                    <i class="bi bi-search text-primary"></i>
+                </span>
+                <input type="text" id="searchCita" class="form-control border-primary shadow-sm" 
+                       placeholder="Buscar por mascota o propietario...">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select id="filterEspecie" class="form-select form-select-lg">
+                <option value="">Todas las especies</option>
+                <option value="Perro">🐕 Perros</option>
+                <option value="Gato">🐱 Gatos</option>
+                <option value="Ave">🦜 Aves</option>
+                <option value="Otro">✨ Otras</option>
+            </select>
+        </div>
+        <div class="col-md-3 text-md-end">
+            <button class="btn btn-outline-primary btn-lg px-4" onclick="clearFilters()">
+                <i class="bi bi-arrow-clockwise"></i> Limpiar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Appointments Grid -->
+<div class="appointments-grid" id="appointmentsGrid">
     {% for cita in citas %}
-    <div class="col">
-        <div class="card h-100 shadow-sm border-0">
-            <div class="card-header bg-white border-0 pt-3">
-                <h5 class="card-title d-flex justify-content-between">
-                    {{ cita['mascota'] }} 
-                    <span class="badge bg-info text-dark fs-6">{{ cita['especie'] }}</span>
-                </h5>
+    <div class="appointment-card card-item" data-especie="{{ cita['especie'] }}" data-id="{{ cita['id'] }}">
+        <div class="card appointment-card-inner border-0 shadow-lg h-100 overflow-hidden">
+            <!-- Header con foto simulada -->
+            <div class="card-img-top position-relative overflow-hidden">
+                <div class="pet-photo {% if cita['especie'] == 'Perro' %}pet-dog{% elif cita['especie'] == 'Gato' %}pet-cat{% elif cita['especie'] == 'Ave' %}pet-bird{% else %}pet-other{% endif %}" data-id="{{ cita['id'] }}">
+                    <i class="bi bi-paw-print-fill pet-icon"></i>
+                </div>
+                <div class="card-header-overlay d-flex justify-content-between align-items-start p-3">
+                    <div>
+                        <h5 class="mb-1 fw-bold text-white">{{ cita['mascota'] }}</h5>
+                        <span class="badge bg-light text-dark px-2 py-1 fw-semibold">{{ cita['especie'] }}</span>
+                    </div>
+                    <div class="status-badge">
+                        <i class="bi bi-circle-fill text-success"></i>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <p class="mb-1 text-muted"><strong>Propietario:</strong> {{ cita['propietario'] }}</p>
-                <p class="mb-1 text-muted"><strong>Fecha:</strong> {{ cita['fecha'] }}</p>
+            
+            <div class="card-body p-4">
+                <div class="info-group mb-3">
+                    <label class="info-label"><i class="bi bi-person-fill me-1"></i>Propietario</label>
+                    <div class="info-value fw-semibold">{{ cita['propietario'] }}</div>
+                </div>
+                
+                <div class="info-group mb-4">
+                    <label class="info-label"><i class="bi bi-calendar-event me-1"></i>Fecha</label>
+                    <div class="info-value h5 text-primary fw-bold">{{ cita['fecha'] }}</div>
+                </div>
             </div>
-            <div class="card-footer bg-white border-0 pb-3 d-flex justify-content-between">
-                <a href="{{ url_for('editar', id=cita['id']) }}" class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-pencil"></i> Modificar
-                </a>
-                <a href="{{ url_for('cancelar', id=cita['id']) }}" class="btn btn-outline-danger btn-sm" 
-                   onclick="return confirm('¿Seguro que deseas cancelar esta cita?')">
-                    <i class="bi bi-trash"></i> Cancelar
-                </a>
+            
+            <div class="card-footer bg-transparent border-0 p-4 pt-0">
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('editar', id=cita['id']) }}" class="btn btn-primary flex-grow-1">
+                        <i class="bi bi-pencil-square me-2"></i>Editar
+                    </a>
+                    <a href="{{ url_for('cancelar', id=cita['id']) }}" class="btn btn-outline-danger" 
+                       onclick="return confirm('¿Estás seguro de cancelar la cita de {{ cita['mascota'] }}?')">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
     {% else %}
-    <div class="col-12 text-center my-5">
-        <p class="lead">No hay citas registradas actualmente.</p>
+    <div class="empty-state col-12 text-center py-5">
+        <div class="empty-icon mb-4">
+            <i class="bi bi-calendar-x text-muted" style="font-size: 6rem; opacity: 0.5;"></i>
+        </div>
+        <h3 class="fw-light mb-3 text-muted">¡Aún no hay citas!</h3>
+        <p class="text-muted mb-4">Programa la primera cita de tus pacientes peludos</p>
+        <a href="{{ url_for('agendar') }}" class="btn btn-primary btn-lg px-5 py-3">
+            <i class="bi bi-plus-circle me-2"></i> Agendar Primera Cita
+        </a>
     </div>
     {% endfor %}
 </div>

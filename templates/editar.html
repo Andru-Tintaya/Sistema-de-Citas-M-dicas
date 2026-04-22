@@ -2,32 +2,78 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow border-warning">
-            <div class="card-header bg-warning">
-                <h4 class="mb-0 text-center text-dark">Modificar Cita</h4>
-            </div>
-            <div class="card-body p-4">
-                <form method="POST">
-                    <div class="mb-3">
-                        <label class="form-label">Nombre de la Mascota</label>
-                        <input type="text" name="mascota" class="form-control" value="{{ cita['mascota'] }}" required>
+    <div class="col-xl-8 col-lg-10">
+        <div class="edit-form-card card border-0 shadow-xl">
+            <div class="card-body p-5">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <div class="form-icon mb-3">
+                        <i class="bi bi-pencil-square text-warning" style="font-size: 4rem;"></i>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Propietario</label>
-                        <input type="text" name="propietario" class="form-control" value="{{ cita['propietario'] }}" required>
+                    <h2 class="fw-bold mb-2">Editar Cita</h2>
+                    <p class="text-muted lead">Actualiza la información de {{ cita['mascota'] }}</p>
+                </div>
+
+                <!-- Form -->
+                <form method="POST" id="editForm">
+                    <div class="row g-4">
+                        <!-- Mascota -->
+                        <div class="col-lg-12">
+                            <label class="form-label fw-semibold mb-3">🐾 Nombre de la Mascota</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-gradient-primary">
+                                    <i class="bi bi-heart-fill"></i>
+                                </span>
+                                <input type="text" name="mascota" class="form-control form-control-lg shadow-sm" 
+                                       value="{{ cita['mascota'] }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Propietario -->
+                        <div class="col-lg-12">
+                            <label class="form-label fw-semibold mb-3">👤 Propietario</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-gradient-secondary">
+                                    <i class="bi bi-person-badge-fill"></i>
+                                </span>
+                                <input type="text" name="propietario" class="form-control form-control-lg shadow-sm" 
+                                       value="{{ cita['propietario'] }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Especie y Fecha -->
+                        <div class="col-lg-6">
+                            <label class="form-label fw-semibold mb-3">🐶 Especie</label>
+                            <select name="especie" class="form-select form-select-lg shadow-sm" required>
+                                <option value="Perro" {% if cita['especie'] == 'Perro' %}selected{% endif %}>🐕 Perro</option>
+                                <option value="Gato" {% if cita['especie'] == 'Gato' %}selected{% endif %}>🐱 Gato</option>
+                                <option value="Ave" {% if cita['especie'] == 'Ave' %}selected{% endif %}>🦜 Ave</option>
+                                <option value="Conejo" {% if cita['especie'] == 'Conejo' %}selected{% endif %}>🐰 Conejo</option>
+                                <option value="Otro" {% if cita['especie'] == 'Otro' %}selected{% endif %}>✨ Otra</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label class="form-label fw-semibold mb-3">📅 Nueva Fecha y Hora</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-gradient-success">
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                </span>
+                                <input type="datetime-local" name="fecha" class="form-control form-control-lg shadow-sm" 
+                                       value="{{ cita['fecha'] }}" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Especie</label>
-                        <input type="text" name="especie" class="form-control" value="{{ cita['especie'] }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nueva Fecha</label>
-                        <input type="text" name="fecha" class="form-control" value="{{ cita['fecha'] }}" required>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-warning">Actualizar Datos</button>
-                        <a href="{{ url_for('index') }}" class="btn btn-link text-muted">Cancelar Cambios</a>
+
+                    <!-- Actions -->
+                    <div class="d-grid gap-3 mt-5">
+                        <button type="submit" class="btn btn-warning btn-lg py-3 fw-semibold shadow-lg">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            Actualizar Cita
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary py-3">
+                            <i class="bi bi-arrow-left me-2"></i>Volver sin Guardar
+                        </a>
                     </div>
                 </form>
             </div>

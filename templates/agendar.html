@@ -2,37 +2,78 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0 text-center">Registrar Nueva Cita</h4>
-            </div>
-            <div class="card-body p-4">
-                <form method="POST">
-                    <div class="mb-3">
-                        <label class="form-label">Nombre de la Mascota</label>
-                        <input type="text" name="mascota" class="form-control" placeholder="Ej: Toby" required>
+    <div class="col-xl-8 col-lg-10">
+        <div class="appointment-form-card card border-0 shadow-xl">
+            <div class="card-body p-5">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <div class="form-icon mb-3">
+                        <i class="bi bi-calendar-plus-fill text-primary" style="font-size: 4rem;"></i>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nombre del Propietario</label>
-                        <input type="text" name="propietario" class="form-control" placeholder="Ej: Juan Pérez" required>
+                    <h2 class="fw-bold mb-2">Nueva Cita Veterinaria</h2>
+                    <p class="text-muted lead">Completa la información de tu paciente</p>
+                </div>
+
+                <!-- Form -->
+                <form method="POST" id="appointmentForm">
+                    <div class="row g-4">
+                        <!-- Mascota -->
+                        <div class="col-lg-12">
+                            <label class="form-label fw-semibold mb-3">🐾 Nombre de la Mascota</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-gradient-primary">
+                                    <i class="bi bi-heart-fill"></i>
+                                </span>
+                                <input type="text" name="mascota" class="form-control form-control-lg shadow-sm" 
+                                       placeholder="Ej: Luna, Max, Rocky..." required>
+                            </div>
+                        </div>
+
+                        <!-- Propietario -->
+                        <div class="col-lg-12">
+                            <label class="form-label fw-semibold mb-3">👤 Nombre del Propietario</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-gradient-secondary">
+                                    <i class="bi bi-person-badge-fill"></i>
+                                </span>
+                                <input type="text" name="propietario" class="form-control form-control-lg shadow-sm" 
+                                       placeholder="Ej: Juan Pérez..." required>
+                            </div>
+                        </div>
+
+                        <!-- Especie y Fecha -->
+                        <div class="col-lg-6">
+                            <label class="form-label fw-semibold mb-3">🐶 Especie</label>
+                            <select name="especie" class="form-select form-select-lg shadow-sm" required>
+                                <option value="">Selecciona una especie</option>
+                                <option value="Perro">🐕 Perro</option>
+                                <option value="Gato">🐱 Gato</option>
+                                <option value="Ave">🦜 Ave</option>
+                                <option value="Conejo">🐰 Conejo</option>
+                                <option value="Otro">✨ Otra</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label class="form-label fw-semibold mb-3">📅 Fecha y Hora</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-gradient-success">
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                </span>
+                                <input type="datetime-local" name="fecha" class="form-control form-control-lg shadow-sm" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Especie</label>
-                        <select name="especie" class="form-select" required>
-                            <option value="Perro">Perro</option>
-                            <option value="Gato">Gato</option>
-                            <option value="Ave">Ave</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Fecha de la Cita</label>
-                        <input type="datetime-local" name="fecha" class="form-control" required>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Guardar Cita</button>
-                        <a href="{{ url_for('index') }}" class="btn btn-link">Volver a la Agenda</a>
+
+                    <!-- Actions -->
+                    <div class="d-grid gap-3 mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-semibold shadow-lg">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            Confirmar Nueva Cita
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary py-3">
+                            <i class="bi bi-arrow-left me-2"></i>Volver a Agenda
+                        </a>
                     </div>
                 </form>
             </div>
