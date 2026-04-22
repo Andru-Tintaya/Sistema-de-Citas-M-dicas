@@ -29,7 +29,7 @@ def get_db_connection():
 
 # --- RUTAS ---
 
-# 1. Agenda: Mostrar todas las citas [cite: 312]
+# 1. Agenda: Mostrar todas las citas 
 @app.route('/')
 def index():
     conn = get_db_connection()
@@ -37,7 +37,7 @@ def index():
     conn.close()
     return render_template('index.html', citas=citas)
 
-# 2. Agendar: Registrar nueva cita [cite: 312]
+# 2. Agendar: Registrar nueva cita #
 @app.route('/agendar', methods=['GET', 'POST'])
 def agendar():
     if request.method == 'POST':
@@ -54,7 +54,7 @@ def agendar():
         return redirect(url_for('index'))
     return render_template('agendar.html')
 
-# 3. Modificar: Editar cita existente [cite: 313]
+# 3. Modificar: Editar cita existente
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar(id):
     conn = get_db_connection()
@@ -75,7 +75,7 @@ def editar(id):
     conn.close()
     return render_template('editar.html', cita=cita)
 
-# 4. Cancelar: Eliminar cita [cite: 314]
+# 4. Cancelar: Eliminar cita 
 @app.route('/cancelar/<int:id>')
 def cancelar(id):
     conn = get_db_connection()
@@ -85,4 +85,4 @@ def cancelar(id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001) # Cambié el puerto para que no choque con otros# Conexión SQLite activa
+    app.run(debug=True, port=5001) 
